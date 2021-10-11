@@ -12,12 +12,12 @@ private:
 	string place = 0;
 	float health = 0;
 	float armor = 0;
-	int level = 0;
+
 public:
 	Villain();
 	~Villain();
 	Villain(const Villain& Villain_copy);
-	Villain(float health, float armor = 0, int level = 0);
+	Villain(string name);
 
 	string get_weapon();
 	string set_weapon(string& weapon_ch);
@@ -29,6 +29,9 @@ public:
 	float set_health(float& health_ch);
 	float get_armor() const;
 	float set_armor(float& armor_ch);
-	int get_level() const;
-	int set_level(int& level_ch);
+
+	virtual void show(); //будет переопределен для каждого наследника
+	virtual void del(); //удаление по индексу массива
+	virtual void insert(); //добавление элемента по индексу
+	virtual void rewrite(); //перезапись данных (удаление + вставка)
 };
