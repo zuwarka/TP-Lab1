@@ -3,73 +3,77 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cassert>
 #include "Keeper.h"
 
 using namespace std;
 
-Keeper::Keeper() : m_size(0), m_data(nullptr) {}
-Keeper::Keeper(int size) : m_data(nullptr) { this->m_size = size; }
-Keeper::~Keeper() { delete[] m_data; }
+Keeper::Keeper() : m_size(0), head(nullptr) {}
+Keeper::Keeper(int size) : head(nullptr) { this->m_size = size; }
+Keeper::~Keeper() 
+{ 
+	Elem* buffer;
+	while (head->next != NULL)
+	{
+		buffer = head;
+		head = head->next;
+		buffer->m_data->~Character();
+		delete(buffer);
+	}
+	head->m_data->~Character();
+	delete(head);
+}
 
-Character*& Keeper::operator[] (int index)
+Character* Keeper::operator[] (const int index)
 {
-	assert(index >= 0 && index <= m_size);
-	return m_data[index];
+	if ((index >= m_size) || (index < 0))
+	{
+		throw "Incorrect index!";
+	}
+	else
+	{
+		Elem* buffer = head;
+		for (int i = 1; i < m_size - index - 1; i++)
+		{
+			buffer = buffer->next;
+		}
+		return (buffer->m_data);
+	}
 }
 
 int Keeper::get_size() { return m_size; }
 
-void Keeper::erase()
+void Keeper::insert(Character* n_data)
 {
-	delete[] m_data;
-	m_data = nullptr;
-	m_size = 0;
+	Elem* tmp;
+	tmp = new Elem;
+
+	if (m_size == 0)
+	{
+		tmp->m_data = n_data;
+		tmp->next = NULL;
+		++m_size;
+	}
+	else
+	{
+		tmp->m_data = n_data;
+		tmp->next = head;
+		++m_size;
+	}
+
+	head = tmp;
 }
 
-void Keeper::insert(Character* n_data, int index)
+void Keeper::remove()
 {
-	assert(index >= 0 && index <= m_size); //Проверка корректности передаваемого индекса
-	Character** data = new Character*[m_size+1]; //Создаем новый массив на один элемент больше старого массива
-
-	for (int before = 0; before < index; ++before) //Копируем все элементы аж до index
+	Elem* tmp = NULL;
+	if (m_size == 0)
 	{
-		data[before] = m_data[before];
+		throw "Удалять нечего, список значений пуст";
+		system("pause");
 	}
-
-	data[index] = n_data; //Вставляем наш новый элемент в наш новый массив
-
-	for (int after = index; after < m_size; ++after) //Копируем все значения после вставляемого элемента
-	{
-		data[after + 1] = m_data[after];
-	}
-
-	delete[] m_data;
-	m_data = data;
-	++m_size;
-}
-
-void Keeper::remove(int index)
-{
-	assert(index >= 0 && index <= m_size); //Проверка корректности передаваемого индекса
-	if (m_size == 1) //Если это последний элемент массива, то делаем массив пустым и выполняем return
-	{
-		erase();
-		return;
-	}
-	Character** data = new Character * [m_size + 1];
-
-	for (int before = 0; before < index; ++before) //Копируем все элементы аж до index
-	{
-		data[before] = m_data[before];
-	}
-	for (int after = index+1; after < m_size; ++after) //Копируем все значения после вставляемого элемента
-	{
-		data[after - 1] = m_data[after];
-	}
-
-	delete[] m_data;
-	m_data = data;
+	tmp = head;
+	head = head->next;
+	delete tmp;
 	--m_size;
 }
 
@@ -77,12 +81,110 @@ void Keeper::save()
 {
 	ofstream outfile;
 	string initfile = "data.txt";
-	outfile.open(initfile);
+	outfile.open(initfile, ios_base::out);
 	if (!outfile)
 	{
+		throw "Error opening file!";
+		system("pause");
+		exit(1);
+	}
+	else
+	{
+		outfile << m_size << endl;
+		outfile.close();
+	}
+	//outfile << m_size << endl;
+	
+	Elem* buffer = head;
+	for (int i = 0; i < m_size; i++)
+	{
+		buffer->m_data->saving();
+		buffer = buffer->next;
+	}
+	//outfile.close();
+}
+
+void Keeper::load()
+{
+	ifstream infile;
+	int read_size, num_character; //переменная читки размера и персонажа
+	string a, b, c, d, e, f, g; //считываемые строки
+	string initfile = "data.txt";
+	Character* characters;
+
+	infile.open(initfile);
+	if (!infile)
+	{
 		throw "Error opening!";
+		system("pause");
 		exit(1);
 	}
 
+	infile >> read_size; //читаем кол-во персонажей
 
+	for (int i = 0; i < read_size; i++)
+	{
+		infile >> num_character; //читаем номер персонажа
+		infile.ignore(32767, '\n');
+
+		if (num_character == 1) //перед нами герой
+		{
+			//infile >> a >> b >> c >> d >> e;
+			
+			getline(infile, a);
+			getline(infile, b);
+			getline(infile, c);
+			getline(infile, d);
+			getline(infile, e);
+			Hero* hero;
+			hero = new Hero;
+			hero->set_name(a);
+			hero->set_level(b);
+			hero->set_weapon(c);
+			hero->set_health(d);
+			hero->set_armor(e);
+			characters = hero;
+			insert(characters);
+		}
+
+		if (num_character == 2) //перед нами злодей
+		{
+			//infile >> a >> b >> c >> d >> e >> f >> g;
+			
+			getline(infile, a);
+			getline(infile, b);
+			getline(infile, c);
+			getline(infile, d);
+			getline(infile, e);
+			getline(infile, f);
+			getline(infile, g);
+			Villain* villain;
+			villain = new Villain;
+			villain->set_name(a);
+			villain->set_level(b);
+			villain->set_weapon(c);
+			villain->set_guilt(d);
+			villain->set_place(e);
+			villain->set_health(f);
+			villain->set_armor(g);
+			characters = villain;
+			insert(characters);
+		}
+
+		if (num_character == 3) //перед нами монстр
+		{
+			//infile >> a >> b >> c;
+			
+			getline(infile, a);
+			getline(infile, b);
+			getline(infile, c);
+			Monster* monster;
+			monster = new Monster;
+			monster->set_name(a);
+			monster->set_level(b);
+			monster->set_description(c);
+			characters = monster;
+			insert(characters);
+		}
+	}
 }

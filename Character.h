@@ -8,22 +8,18 @@ using namespace std;
 
 class Character
 {
-protected:
-	string name;
-	int level = 0;
-
 public:
 	Character() {};
-	Character(string name_ch) : name(name_ch) {};
 	virtual ~Character() {};
 
-	string get_name() { return name; };
-	string set_name(string& name_ch) { name = name_ch; };
-	int get_level() { return level; };
-	int set_level(int& level_ch) { level = level_ch; };
-
 	virtual void show() = 0; //будет переопределен для каждого наследника
-	virtual void del() = 0; //удаление по индексу массива
-	virtual void insert() = 0; //добавление элемента по индексу
 	virtual void rewrite() = 0; //перезапись данных (удаление + вставка)
+	virtual void saving() = 0; //сохраняем тот или иной наследник
+	virtual void redact_str(int num_str, string red_str) = 0; //отредактировать строку
 };
+
+typedef struct Elem
+{
+	Character* m_data;
+	Elem* next;
+} Elem;

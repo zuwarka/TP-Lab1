@@ -1,5 +1,5 @@
 #pragma once
-
+//2
 #include <string>
 #include "Character.h"
 using namespace std;
@@ -7,11 +7,13 @@ using namespace std;
 class Villain : public Character
 {
 private:
-	string weapon = 0;
-	string guilt = 0;
-	string place = 0;
-	float health = 0;
-	float armor = 0;
+	string name;
+	string level;
+	string weapon;
+	string guilt;
+	string place;
+	string health;
+	string armor;
 
 public:
 	Villain();
@@ -19,19 +21,23 @@ public:
 	Villain(const Villain& Villain_copy);
 	Villain(string name);
 
-	string get_weapon();
-	string set_weapon(string& weapon_ch);
-	string get_guilt();
-	string set_guilt(string& guilt_ch);
-	string get_place();
-	string set_place(string& place_ch);
-	float get_health() const;
-	float set_health(float& health_ch);
-	float get_armor() const;
-	float set_armor(float& armor_ch);
+	string get_name() const;
+	void set_name(string name_ch);
+	string get_level() const;
+	void set_level(string level_ch);
+	string get_weapon() const;
+	void set_weapon(string weapon_ch);
+	string get_guilt() const;
+	void set_guilt(string guilt_ch);
+	string get_place() const;
+	void set_place(string place_ch);
+	string get_health() const;
+	void set_health(string health_ch);
+	string get_armor() const;
+	void set_armor(string armor_ch);
 
 	virtual void show(); //будет переопределен для каждого наследника
-	virtual void del(); //удаление по индексу массива
-	virtual void insert(); //добавление элемента по индексу
 	virtual void rewrite(); //перезапись данных (удаление + вставка)
+	virtual void saving();
+	virtual void redact_str(int num_str, string red_str);
 };

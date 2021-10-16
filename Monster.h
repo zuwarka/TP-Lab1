@@ -1,5 +1,5 @@
 #pragma once
-
+//3
 #include <string>
 #include "Character.h"
 using namespace std;
@@ -7,7 +7,9 @@ using namespace std;
 class Monster : public Character
 {
 private:
-	string description = 0;
+	string name;
+	string level;
+	string description;
 
 public:
 	Monster();
@@ -15,11 +17,15 @@ public:
 	Monster(const Monster& Monster_copy);
 	Monster(string name);
 
-	string get_description();
-	string set_descriprion(string& description_ch);
+	string get_name() const;
+	void set_name(string name_ch);
+	string get_level() const;
+	void set_level(string level_ch);
+	string get_description() const;
+	void set_description(string description_ch);
 
 	virtual void show(); //будет переопределен для каждого наследника
-	virtual void del(); //удаление по индексу массива
-	virtual void insert(); //добавление элемента по индексу
 	virtual void rewrite(); //перезапись данных (удаление + вставка)
+	virtual void saving();
+	virtual void redact_str(int num_str, string red_str);
 };

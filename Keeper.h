@@ -1,5 +1,8 @@
 #pragma once
 #include "Character.h"
+#include "Hero.h"
+#include "Villain.h"
+#include "Monster.h"
 
 using namespace std;
 
@@ -7,19 +10,18 @@ class Keeper
 {
 private:
 	int m_size = 0;
-	Character** m_data;
+	Elem* head = NULL;
 
 public:
 	Keeper();
 	Keeper(int size);
 	~Keeper();
 
-	Character*& operator[] (int index);
+	Character* operator[] (int index);
 
 	int get_size();
-	void erase(); //стереть данные из массива
-	void insert(Character* n_data, int index); //добавление в массив перед индексом
-	void remove(int index);
+	void insert(Character* n_data); //добавление в массив перед индексом
+	void remove();
 	void save(); //сохранить в файл
-	void file_write(); //чтение из файла
+	void load(); //чтение из файла
 };
