@@ -51,7 +51,7 @@ void Monster::rewrite()
 {
 	cout << "------------------------------------" << endl;
 	cin.ignore(32767, '\n');
-	cout << "Character: monster" << endl;
+	cout << "Character: MONSTER" << endl;
 	cout << "Input new name: ";
 	getline(cin, name);
 	cout << "Input new level: ";

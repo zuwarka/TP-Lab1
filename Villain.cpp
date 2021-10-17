@@ -67,7 +67,7 @@ void Villain::rewrite()
 {
 	cout << "------------------------------------" << endl;
 	cin.ignore(32767, '\n');
-	cout << "Character: villain" << endl;
+	cout << "Character: VILLAIN" << endl;
 	cout << "Input new name: ";
 	getline(cin, name);
 	cout << "Input new level: ";

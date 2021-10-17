@@ -32,7 +32,7 @@ Character* Keeper::operator[] (const int index)
 	else
 	{
 		Elem* buffer = head;
-		for (int i = 1; i < m_size - index - 1; i++)
+		for (int i = 0; i < m_size - index - 1; i++)
 		{
 			buffer = buffer->next;
 		}
@@ -50,7 +50,7 @@ void Keeper::insert(Character* n_data)
 	if (m_size == 0)
 	{
 		tmp->m_data = n_data;
-		tmp->next = NULL;
+		tmp->next = 0;
 		++m_size;
 	}
 	else
@@ -63,17 +63,24 @@ void Keeper::insert(Character* n_data)
 	head = tmp;
 }
 
-void Keeper::remove()
+void Keeper::remove(int index)
 {
-	Elem* tmp = NULL;
 	if (m_size == 0)
 	{
-		throw "Удалять нечего, список значений пуст";
+		throw "There's nothing to delete!";
 		system("pause");
 	}
-	tmp = head;
-	head = head->next;
-	delete tmp;
+	int counter = 0;
+	while (counter < index - 1)
+	{
+		head = head->next;
+		counter++;
+	}
+
+	Elem* prev = head;
+	prev->next->m_data->~Character();
+	prev->next->next;
+	delete(prev->next);
 	--m_size;
 }
 
@@ -81,7 +88,7 @@ void Keeper::save()
 {
 	ofstream outfile;
 	string initfile = "data.txt";
-	outfile.open(initfile, ios_base::out);
+	outfile.open(initfile);
 	if (!outfile)
 	{
 		throw "Error opening file!";
@@ -93,7 +100,6 @@ void Keeper::save()
 		outfile << m_size << endl;
 		outfile.close();
 	}
-	//outfile << m_size << endl;
 	
 	Elem* buffer = head;
 	for (int i = 0; i < m_size; i++)
@@ -101,11 +107,25 @@ void Keeper::save()
 		buffer->m_data->saving();
 		buffer = buffer->next;
 	}
-	//outfile.close();
 }
 
 void Keeper::load()
 {
+	if (m_size != 0)
+	{
+		Elem* buffer;
+		while (head->next != NULL)
+		{
+			buffer = head;
+			head = head->next;
+			buffer->m_data->~Character();
+			delete(buffer);
+		}
+		head->m_data->~Character();
+		delete(head);
+	}
+
+
 	ifstream infile;
 	int read_size, num_character; //переменная читки размера и персонажа
 	string a, b, c, d, e, f, g; //считываемые строки

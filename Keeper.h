@@ -21,7 +21,7 @@ public:
 
 	int get_size();
 	void insert(Character* n_data); //добавление в массив перед индексом
-	void remove();
+	void remove(int index);
 	void save(); //сохранить в файл
 	void load(); //чтение из файла
 };

@@ -22,7 +22,7 @@ int main()
 	Keeper list;
 	Character* characters;
 	string redact;
-	int c1, c2, exit = 1;
+	int c1, c2, c3, exit = 1;
 	int flag = 1;
 
 	cout << "The 1(5) laba of TP welcome you!" << endl;
@@ -34,6 +34,7 @@ int main()
 		cout << "3 - Add new character" << endl;
 		cout << "4 - Save all changes to the file" << endl;
 		cout << "5 - Load data from the file" << endl;
+		cout << "6 - Delete a character" << endl;
 		cout << "0 - Exit" << endl;
 		cout << "->  ";
 		cin >> c1;
@@ -41,6 +42,7 @@ int main()
 		switch (c1)
 		{
 		case 1: //1 - Show all characters
+			system("cls");
 			try
 			{
 				if (list.get_size() == 0)
@@ -48,8 +50,7 @@ int main()
 					throw "There's nothing to show.";
 					break;
 				}
-				//cout << list.get_size();
-				for (int i = 1; i < list.get_size(); i++)
+				for (int i = 0; i < list.get_size(); i++)
 				{
 					list[i]->show();
 				}
@@ -58,11 +59,11 @@ int main()
 			system("pause");
 			break;
 		case 2: //2 - Change data of character
+			system("cls");
 			try
 			{
 				cout << "What character do you want to change (from 1 to " << list.get_size() << ")?" << endl;
 				cin >> c2;
-				cin.ignore(32767, '\n');
 
 				if (c2 < 1 || c2 > list.get_size())
 				{
@@ -70,15 +71,15 @@ int main()
 					break;
 				}
 
-				list[c2]->show();
+				list[c2-1]->show();
 				cout << "What string do you want to change (except Character)?" << endl;
 				cout << "->  ";
-				cin >> c2;
+				cin >> c3;
 				cin.ignore(32767, '\n');
 				cout << "What do you want to put in this string?" << endl;
 				cout << "->  ";
 				getline(cin, redact);
-				list[c2]->redact_str(c2, redact);
+				list[c2-1]->redact_str(c3, redact);
 				cout << "The string was redacted." << endl;
 
 			}
@@ -86,6 +87,7 @@ int main()
 			system("pause");
 			break;
 		case 3: //3 - Add new character
+			system("cls");
 			cout << "\nWhat character do you want to add?" << endl;
 			cout << "1 - Hero" << endl;
 			cout << "2 - Villain" << endl;
@@ -93,7 +95,6 @@ int main()
 			cout << "0 - Go back" << endl;
 			cout << "->  ";
 			cin >> c2;
-			//cin.ignore(32767, '\n');
 
 			switch (c2)
 			{
@@ -127,6 +128,7 @@ int main()
 			system("pause");
 			break;
 		case 4: //4 - Save all changes to the file
+			system("cls");
 			try
 			{
 				if (list.get_size() == 0)
@@ -135,16 +137,40 @@ int main()
 					break;
 				}
 				list.save();
+				cout << "The data was saved to the file." << endl;
 			}
 			catch (const char* ex) { cout << ex << endl; }
 			system("pause");
 			break;
 		case 5: //5 - Save all changes to the file
+			system("cls");
 			try
 			{
 				list.load();
+				cout << "The data was loaded from file." << endl;
 			}
 			catch (const char* ex) { cout << ex << endl; }
+			break;
+		case 6: //6 - Delete a character
+			system("cls");
+			cout << "What character do you want to change (from 1 to " << list.get_size() << ")?" << endl;
+			for (int i = 0; i < list.get_size(); i++)
+			{
+				list[i]->show();
+			}
+			cout << "->  ";
+			cin >> c2;
+
+			if (c2 < 1 || c2 > list.get_size())
+			{
+				throw "Incorrect number!";
+				break;
+			}
+
+			list.remove(c2);
+			cout << "The chosen character was deleted." << endl;
+
+			system("pause");
 			break;
 		default:
 			exit = 0;
