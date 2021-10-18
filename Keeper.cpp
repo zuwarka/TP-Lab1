@@ -8,16 +8,19 @@ Keeper::Keeper() : m_size(0), head(nullptr) {}
 Keeper::Keeper(int size) : head(nullptr) { this->m_size = size; }
 Keeper::~Keeper() 
 { 
-	Elem* buffer;
-	while (head->next != NULL)
+	if (head != NULL)
 	{
-		buffer = head;
-		head = head->next;
-		buffer->m_data->~Character();
-		delete(buffer);
+		Elem* buffer;
+		while (head->next != NULL)
+		{
+			buffer = head;
+			head = head->next;
+			buffer->m_data->~Character();
+			delete(buffer);
+		}
+		head->m_data->~Character();
+		delete(head);
 	}
-	head->m_data->~Character();
-	delete(head);
 }
 
 Character* Keeper::operator[] (const int index)
