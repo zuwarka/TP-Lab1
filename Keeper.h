@@ -1,8 +1,5 @@
 #pragma once
-#include "Character.h"
-#include "Hero.h"
-#include "Villain.h"
-#include "Monster.h"
+#include "Library.h"
 
 using namespace std;
 

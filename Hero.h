@@ -1,7 +1,6 @@
 #pragma once
 //1
-#include <string>
-#include "Character.h"
+#include "Library.h"
 using namespace std;
 
 class Hero : public Character

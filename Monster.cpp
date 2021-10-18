@@ -1,9 +1,4 @@
-#include "Monster.h"
-#include "Character.h"
-#include <iostream>
-#include <string>
-#include <fstream>
-
+#include "Library.h"
 using namespace std;
 
 Monster::Monster()

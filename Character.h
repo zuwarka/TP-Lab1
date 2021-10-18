@@ -1,8 +1,7 @@
 #pragma once
 //BASE abstract
 //Ѕазовый класс ѕерсонаж, в котором ообъ€влено только им€ (это общий элменет дл€ будущих трех наследников)
-#include <iostream>
-#include <string>
+#include "Library.h"
 
 using namespace std;
 
